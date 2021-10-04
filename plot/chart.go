@@ -251,7 +251,7 @@ func WithIndicators(indicators ...Indicator) Option {
 
 func NewChart(options ...Option) *Chart {
 	chart := &Chart{
-		port:      8080,
+		port:      6060,
 		candles:   make(map[string][]Candle),
 		dataframe: make(map[string]*model.Dataframe),
 		orders:    make(map[string][]*Order),
