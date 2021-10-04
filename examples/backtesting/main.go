@@ -21,23 +21,69 @@ func main() {
 		Pairs: []string{
 			"BTCUSDT",
 			"ETHUSDT",
+			// "BATUSDT",
+			"ADAUSDT",
+			"BNBUSDT",
 		},
 	}
 
-	strategy := new(strategies.CrossEMA)
+	strategy := new(strategies.CrossEMA2)
 
+	suffix := "-2021-crash-to-today-30m"
+	// suffix := "-30m"
+	timeFrame := "30m"
 	csvFeed, err := exchange.NewCSVFeed(
 		strategy.Timeframe(),
 		exchange.PairFeed{
 			Pair:      "BTCUSDT",
-			File:      "testdata/btc-1h.csv",
-			Timeframe: "1h",
+			File:      fmt.Sprintf("testdata/btc%s.csv", suffix),
+			Timeframe: timeFrame,
 		},
 		exchange.PairFeed{
 			Pair:      "ETHUSDT",
-			File:      "testdata/eth-1h.csv",
-			Timeframe: "1h",
+			File:      fmt.Sprintf("testdata/eth%s.csv", suffix),
+			Timeframe: timeFrame,
 		},
+		exchange.PairFeed{
+			Pair:      "BATUSDT",
+			File:      fmt.Sprintf("testdata/bat%s.csv", suffix),
+			Timeframe: timeFrame,
+		},
+		exchange.PairFeed{
+			Pair:      "ADAUSDT",
+			File:      fmt.Sprintf("testdata/ada%s.csv", suffix),
+			Timeframe: timeFrame,
+		},
+		exchange.PairFeed{
+			Pair:      "BNBUSDT",
+			File:      fmt.Sprintf("testdata/bnb%s.csv", suffix),
+			Timeframe: "30m",
+		},
+		// exchange.PairFeed{
+		// 	Pair:      "BTCUSDT",
+		// 	File:      "testdata/btc-30m.csv",
+		// 	Timeframe: "30m",
+		// },
+		// exchange.PairFeed{
+		// 	Pair:      "ETHUSDT",
+		// 	File:      "testdata/eth-30m.csv",
+		// 	Timeframe: "30m",
+		// },
+		// exchange.PairFeed{
+		// 	Pair:      "BATUSDT",
+		// 	File:      "testdata/bat-30m.csv",
+		// 	Timeframe: "30m",
+		// },
+		// exchange.PairFeed{
+		// 	Pair:      "ADAUSDT",
+		// 	File:      "testdata/ada-30m.csv",
+		// 	Timeframe: "30m",
+		// },
+		// exchange.PairFeed{
+		// 	Pair:      "BNBUSDT",
+		// 	File:      "testdata/bnb-30m.csv",
+		// 	Timeframe: "30m",
+		// },
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -51,12 +97,12 @@ func main() {
 	wallet := exchange.NewPaperWallet(
 		ctx,
 		"USDT",
-		exchange.WithPaperAsset("USDT", 10000),
+		exchange.WithPaperAsset("USDT", 1000),
 		exchange.WithDataFeed(csvFeed),
 	)
 
 	chart := plot.NewChart(plot.WithIndicators(
-		indicator.EMA(8, "red"),
+		indicator.EMA(13, "red"),
 		indicator.EMA(21, "#000"),
 		indicator.RSI(14, "purple"),
 		indicator.Stoch(8, 3, "red", "blue"),

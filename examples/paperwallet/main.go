@@ -24,8 +24,13 @@ func main() {
 		Pairs: []string{
 			"BTCUSDT",
 			"ETHUSDT",
+			// "BATUSDT",
+			"ADAUSDT",
 			"BNBUSDT",
-			"LTCUSDT",
+			// "BTCUSDT",
+			// "ETHUSDT",
+			// "BNBUSDT",
+			// "LTCUSDT",
 		},
 		Telegram: ninjabot.TelegramSettings{
 			Enabled: true,
@@ -51,12 +56,12 @@ func main() {
 		ctx,
 		"USDT",
 		exchange.WithPaperFee(0.001, 0.001),
-		exchange.WithPaperAsset("USDT", 10000),
+		exchange.WithPaperAsset("USDT", 1000),
 		exchange.WithDataFeed(binance),
 	)
 
 	// initializing my strategy
-	strategy := new(strategies.CrossEMA)
+	strategy := new(strategies.CrossEMA2)
 
 	// initializer ninjabot
 	bot, err := ninjabot.NewBot(
