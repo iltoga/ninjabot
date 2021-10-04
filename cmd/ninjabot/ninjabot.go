@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/rodrigo-brito/ninjabot/download"
-	"github.com/rodrigo-brito/ninjabot/exchange"
+	"github.com/iltoga/ninjabot/download"
+	"github.com/iltoga/ninjabot/exchange"
 
 	"github.com/urfave/cli/v2"
 )

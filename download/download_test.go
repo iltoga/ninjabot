@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rodrigo-brito/ninjabot/exchange"
-	"github.com/rodrigo-brito/ninjabot/service"
+	"github.com/iltoga/ninjabot/exchange"
+	"github.com/iltoga/ninjabot/service"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

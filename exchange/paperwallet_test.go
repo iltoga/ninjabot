@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/rodrigo-brito/ninjabot/model"
+	"github.com/iltoga/ninjabot/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

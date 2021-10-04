@@ -4,16 +4,17 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"os"
 	"strconv"
 	"sync"
 
-	"github.com/rodrigo-brito/ninjabot/exchange"
-	"github.com/rodrigo-brito/ninjabot/model"
-	"github.com/rodrigo-brito/ninjabot/notification"
-	"github.com/rodrigo-brito/ninjabot/order"
-	"github.com/rodrigo-brito/ninjabot/service"
-	"github.com/rodrigo-brito/ninjabot/storage"
-	"github.com/rodrigo-brito/ninjabot/strategy"
+	"github.com/iltoga/ninjabot/exchange"
+	"github.com/iltoga/ninjabot/model"
+	"github.com/iltoga/ninjabot/notification"
+	"github.com/iltoga/ninjabot/order"
+	"github.com/iltoga/ninjabot/service"
+	"github.com/iltoga/ninjabot/storage"
+	"github.com/iltoga/ninjabot/strategy"
 
 	"github.com/olekukonko/tablewriter"
 	log "github.com/sirupsen/logrus"
@@ -22,6 +23,7 @@ import (
 const (
 	defaultDatabase  = "ninjabot.db"
 	candleBufferSize = 1e10
+	logFile          = "./out.log"
 )
 
 func init() {
@@ -242,6 +244,12 @@ func (n *NinjaBot) processCandles() {
 }
 
 func (n *NinjaBot) Run(ctx context.Context) error {
+	file, err := os.Create(logFile)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	log.SetOutput(file)
 	for _, pair := range n.settings.Pairs {
 		// setup and subscribe strategy to data feed (candles)
 		strategyController := strategy.NewStrategyController(pair, n.strategy, n.orderController)

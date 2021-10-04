@@ -1,8 +1,8 @@
 package strategies
 
 import (
-	"github.com/rodrigo-brito/ninjabot"
-	"github.com/rodrigo-brito/ninjabot/service"
+	"github.com/iltoga/ninjabot"
+	"github.com/iltoga/ninjabot/service"
 
 	"github.com/markcheno/go-talib"
 	log "github.com/sirupsen/logrus"

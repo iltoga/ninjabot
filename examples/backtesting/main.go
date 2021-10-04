@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/rodrigo-brito/ninjabot"
-	"github.com/rodrigo-brito/ninjabot/examples/strategies"
-	"github.com/rodrigo-brito/ninjabot/exchange"
-	"github.com/rodrigo-brito/ninjabot/plot"
-	"github.com/rodrigo-brito/ninjabot/plot/indicator"
-	"github.com/rodrigo-brito/ninjabot/storage"
+	"github.com/iltoga/ninjabot"
+	"github.com/iltoga/ninjabot/examples/strategies"
+	"github.com/iltoga/ninjabot/exchange"
+	"github.com/iltoga/ninjabot/plot"
+	"github.com/iltoga/ninjabot/plot/indicator"
+	"github.com/iltoga/ninjabot/storage"
 
 	log "github.com/sirupsen/logrus"
 )

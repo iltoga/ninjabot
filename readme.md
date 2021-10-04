@@ -1,8 +1,8 @@
 ![image](https://user-images.githubusercontent.com/7620947/119247309-b69d1580-bb5e-11eb-9d81-4495dfc45f21.png)
 
-[![tests](https://github.com/rodrigo-brito/ninjabot/actions/workflows/ci.yaml/badge.svg)](https://github.com/rodrigo-brito/ninjabot/actions/workflows/ci.yaml)
+[![tests](https://github.com/iltoga/ninjabot/actions/workflows/ci.yaml/badge.svg)](https://github.com/iltoga/ninjabot/actions/workflows/ci.yaml)
 [![codecov](https://codecov.io/gh/rodrigo-brito/ninjabot/branch/main/graph/badge.svg)](https://codecov.io/gh/rodrigo-brito/ninjabot)
-[![Go Reference](https://pkg.go.dev/badge/github.com/rodrigo-brito/ninjabot.svg)](https://pkg.go.dev/github.com/rodrigo-brito/ninjabot)
+[![Go Reference](https://pkg.go.dev/badge/github.com/iltoga/ninjabot.svg)](https://pkg.go.dev/github.com/iltoga/ninjabot)
 
 A fast cryptocurrency trading bot framework implemented in Go. Ninjabot permits users to create and test custom strategies for spot markets. 
 
@@ -12,7 +12,7 @@ Documentation: https://rodrigo-brito.github.io/ninjabot/
 
 ## Installation
 
-`go get -u github.com/rodrigo-brito/ninjabot/...`
+`go get -u github.com/iltoga/ninjabot/...`
 
 ## Examples of Usage
 
@@ -26,8 +26,8 @@ Check [examples](examples) directory:
 
 To download historical data you can download ninjabot CLI from:
 
-- Pre-build binaries in [release page](https://github.com/rodrigo-brito/ninjabot/releases)
-- Or with `go install github.com/rodrigo-brito/ninjabot/cmd/ninjabot@latest`
+- Pre-build binaries in [release page](https://github.com/iltoga/ninjabot/releases)
+- Or with `go install github.com/iltoga/ninjabot/cmd/ninjabot@latest`
 
 **Example of usage**
 ```bash

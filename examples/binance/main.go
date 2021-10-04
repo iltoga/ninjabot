@@ -6,9 +6,9 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/rodrigo-brito/ninjabot"
-	"github.com/rodrigo-brito/ninjabot/examples/strategies"
-	"github.com/rodrigo-brito/ninjabot/exchange"
+	"github.com/iltoga/ninjabot"
+	"github.com/iltoga/ninjabot/examples/strategies"
+	"github.com/iltoga/ninjabot/exchange"
 )
 
 func main() {

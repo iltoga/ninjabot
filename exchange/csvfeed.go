@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/rodrigo-brito/ninjabot/model"
+	"github.com/iltoga/ninjabot/model"
 
 	"github.com/xhit/go-str2duration/v2"
 )

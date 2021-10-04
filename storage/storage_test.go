@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/rodrigo-brito/ninjabot/model"
+	"github.com/iltoga/ninjabot/model"
 )
 
 func TestStorage(t *testing.T) {

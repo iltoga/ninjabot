@@ -7,9 +7,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/rodrigo-brito/ninjabot/service"
+	"github.com/iltoga/ninjabot/service"
 
-	"github.com/rodrigo-brito/ninjabot/model"
+	"github.com/iltoga/ninjabot/model"
 
 	log "github.com/sirupsen/logrus"
 )

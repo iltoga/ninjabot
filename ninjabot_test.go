@@ -8,9 +8,9 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
 
-	"github.com/rodrigo-brito/ninjabot/exchange"
-	"github.com/rodrigo-brito/ninjabot/service"
-	"github.com/rodrigo-brito/ninjabot/storage"
+	"github.com/iltoga/ninjabot/exchange"
+	"github.com/iltoga/ninjabot/service"
+	"github.com/iltoga/ninjabot/storage"
 )
 
 type fakeStrategy struct{}

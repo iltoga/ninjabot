@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rodrigo-brito/ninjabot/model"
+	"github.com/iltoga/ninjabot/model"
 	log "github.com/sirupsen/logrus"
 )
 

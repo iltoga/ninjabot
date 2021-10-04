@@ -7,11 +7,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/rodrigo-brito/ninjabot/service"
+	"github.com/iltoga/ninjabot/service"
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/rodrigo-brito/ninjabot/model"
+	"github.com/iltoga/ninjabot/model"
 )
 
 type assetInfo struct {
