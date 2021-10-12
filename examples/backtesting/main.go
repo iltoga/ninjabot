@@ -22,8 +22,8 @@ func main() {
 			"BTCUSDT",
 			"ETHUSDT",
 			// "BATUSDT",
-			// "ADAUSDT",
-			// "BNBUSDT",
+			"ADAUSDT",
+			"BNBUSDT",
 		},
 	}
 

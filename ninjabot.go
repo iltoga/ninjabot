@@ -100,6 +100,7 @@ func NewBot(ctx context.Context, settings model.Settings, exch service.Exchange,
 		}
 		// register telegram as notifier
 		WithNotifier(bot.telegram)(bot)
+		bot.telegram.Notify("ciao")
 	}
 
 	return bot, nil
