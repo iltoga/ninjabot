@@ -1,132 +1,98 @@
 package storage
 
 import (
+	"io/ioutil"
+	"os"
 	"testing"
 	"time"
 
 	"github.com/iltoga/ninjabot/model"
+	"github.com/stretchr/testify/require"
 )
 
-func TestStorage(t *testing.T) {
-	storage, err := FromMemory()
-	if err != nil {
-		t.Error(err)
-	}
+func TestFromFile(t *testing.T) {
+	file, err := ioutil.TempFile(os.TempDir(), "*.db")
+	require.NoError(t, err)
+	defer func() {
+		os.Remove(file.Name())
+	}()
+	db, err := FromFile(file.Name())
+	require.NoError(t, err)
+	require.NotNil(t, db)
+}
 
-	order1 := &model.Order{
-		ExchangeID: 20,
-		Status:     model.OrderStatusTypeFilled,
-		Price:      100,
-		Quantity:   2,
-	}
+func TestNewBunt(t *testing.T) {
+	now := time.Now()
+	repo, err := FromMemory()
+	require.NoError(t, err)
 
-	err = storage.CreateOrder(order1)
-	if err != nil {
-		t.Error(err)
-	}
-
-	order2 := &model.Order{
-		ExchangeID: 21,
-		Status:     model.OrderStatusTypeFilled,
-		Price:      150,
-		Quantity:   1,
-	}
-
-	err = storage.CreateOrder(order2)
-	if err != nil {
-		t.Error(err)
-	}
-
-	order3 := &model.Order{
-		ExchangeID: 20,
+	firstOrder := &model.Order{
+		ExchangeID: 1,
+		Pair:       "BTCUSDT",
+		Side:       model.SideTypeBuy,
+		Type:       model.OrderTypeLimit,
 		Status:     model.OrderStatusTypeNew,
 		Price:      10,
 		Quantity:   1,
+		CreatedAt:  now.Add(-time.Minute),
+		UpdatedAt:  now.Add(-time.Minute),
 	}
+	err = repo.CreateOrder(firstOrder)
+	require.NoError(t, err)
 
-	err = storage.CreateOrder(order3)
-	if err != nil {
-		t.Error(err)
-	}
-
-	order4 := &model.Order{
-		ExchangeID: 21,
-		Status:     model.OrderStatusTypePartiallyFilled,
-		Price:      100,
-		Quantity:   2,
-	}
-
-	err = storage.CreateOrder(order4)
-	if err != nil {
-		t.Error(err)
-	}
-
-	order5 := &model.Order{
-		ExchangeID: 20,
-		Status:     model.OrderStatusTypePendingCancel,
-		Price:      150,
+	secondOrder := &model.Order{
+		ExchangeID: 2,
+		Pair:       "ETHUSDT",
+		Side:       model.SideTypeBuy,
+		Type:       model.OrderTypeLimit,
+		Status:     model.OrderStatusTypeFilled,
+		Price:      10,
 		Quantity:   1,
+		CreatedAt:  now.Add(time.Minute),
+		UpdatedAt:  now.Add(time.Minute),
 	}
+	err = repo.CreateOrder(secondOrder)
+	require.NoError(t, err)
 
-	err = storage.CreateOrder(order5)
-	if err != nil {
-		t.Error(err)
-	}
-
-	t.Run("get pending orders", func(t *testing.T) {
-		orders, err := storage.GetPendingOrders()
-		if err != nil {
-			t.Error(err)
-		}
-
-		if len(orders) != 3 || orders[0].ID != order3.ID || orders[1].ID != order4.ID || orders[2].ID != order5.ID {
-			t.Error("received invalid pending orders: ", orders)
-		}
+	t.Run("filter with date restriction", func(t *testing.T) {
+		orders, err := repo.Orders(WithUpdateAtBeforeOrEqual(now))
+		require.NoError(t, err)
+		require.Len(t, orders, 1)
+		require.Equal(t, orders[0].ExchangeID, int64(1))
 	})
 
-	t.Run("filter orders", func(t *testing.T) {
-		orders, err := storage.FilterOrders(time.Now(), model.OrderStatusTypeFilled, order1.Symbol, order1.ID)
-		if err != nil {
-			t.Error(err)
-		}
-
-		if len(orders) != 1 || orders[0].ID != order2.ID {
-			t.Error("received invalid orders from filter: ", orders)
-		}
+	t.Run("get all", func(t *testing.T) {
+		orders, err := repo.Orders()
+		require.NoError(t, err)
+		require.Len(t, orders, 2)
+		require.Equal(t, orders[0].ExchangeID, int64(1))
+		require.Equal(t, orders[1].ExchangeID, int64(2))
 	})
 
-	t.Run("update status", func(t *testing.T) {
-		err := storage.UpdateOrderStatus(order3.ID, model.OrderStatusTypeFilled)
-		if err != nil {
-			t.Error(err)
-		}
-
-		orders, err := storage.FilterOrders(time.Now(), model.OrderStatusTypeFilled, order1.Symbol, order1.ID)
-		if err != nil {
-			t.Error(err)
-		}
-
-		if len(orders) != 2 || orders[0].ID != order2.ID || orders[1].ID != order3.ID {
-
-			t.Error("received invalid orders from filter: ", orders)
-		}
+	t.Run("pair filter", func(t *testing.T) {
+		orders, err := repo.Orders(WithPair("ETHUSDT"))
+		require.NoError(t, err)
+		require.Len(t, orders, 1)
+		require.Equal(t, orders[0].Pair, "ETHUSDT")
 	})
 
-	t.Run("update order", func(t *testing.T) {
-		err := storage.UpdateOrder(order4.ID, time.Now(), model.OrderStatusTypeFilled, 5, 200)
-		if err != nil {
-			t.Error(err)
-		}
+	t.Run("status filter", func(t *testing.T) {
+		orders, err := repo.Orders(WithStatusIn(model.OrderStatusTypeFilled))
+		require.NoError(t, err)
+		require.Len(t, orders, 1)
+		require.Equal(t, orders[0].ID, secondOrder.ID)
+	})
 
-		orders, err := storage.FilterOrders(time.Now(), model.OrderStatusTypeFilled, order1.Symbol, order1.ID)
-		if err != nil {
-			t.Error(err)
-		}
+	t.Run("update", func(t *testing.T) {
+		firstOrder.Status = model.OrderStatusTypeCanceled
+		err := repo.UpdateOrder(firstOrder)
+		require.NoError(t, err)
 
-		if len(orders) != 3 || orders[0].ID != order2.ID || orders[1].ID != order3.ID ||
-			orders[2].ID != order4.ID || orders[2].Quantity != 5 || orders[2].Price != 200 {
-
-			t.Error("received invalid orders from filter: ", orders)
-		}
+		orders, err := repo.Orders(WithStatus(model.OrderStatusTypeCanceled))
+		require.NoError(t, err)
+		require.Len(t, orders, 1)
+		require.Equal(t, firstOrder.ID, orders[0].ID)
+		require.Equal(t, firstOrder.Price, orders[0].Price)
+		require.Equal(t, firstOrder.Quantity, orders[0].Quantity)
 	})
 }

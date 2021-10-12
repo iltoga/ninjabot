@@ -31,28 +31,28 @@ var (
 )
 
 type Order struct {
-	ID         int64           `db:"id"`
-	ExchangeID int64           `db:"exchange_id"`
-	Symbol     string          `db:"symbol"`
-	Side       SideType        `db:"side"`
-	Type       OrderType       `db:"type"`
-	Status     OrderStatusType `db:"status"`
-	Price      float64         `db:"price"`
-	Quantity   float64         `db:"quantity"`
+	ID         int64           `db:"id" json:"id"`
+	ExchangeID int64           `db:"exchange_id" json:"exchange_id"`
+	Pair       string          `db:"pair" json:"pair"`
+	Side       SideType        `db:"side" json:"side"`
+	Type       OrderType       `db:"type" json:"type"`
+	Status     OrderStatusType `db:"status" json:"status"`
+	Price      float64         `db:"price" json:"price"`
+	Quantity   float64         `db:"quantity" json:"quantity"`
 
-	CreatedAt time.Time `db:"created_at"`
-	UpdatedAt time.Time `db:"updated_at"`
+	CreatedAt time.Time `db:"created_at" json:"created_at"`
+	UpdatedAt time.Time `db:"updated_at" json:"updated_at"`
 
 	// OCO Orders only
-	Stop    *float64 `db:"stop"`
-	GroupID *int64   `db:"group_id"`
+	Stop    *float64 `db:"stop" json:"stop"`
+	GroupID *int64   `db:"group_id" json:"group_id"`
 
 	// Internal use (Plot)
-	Profit float64
-	Candle Candle
+	Profit float64 `json:"-"`
+	Candle Candle  `json:"-"`
 }
 
 func (o Order) String() string {
 	return fmt.Sprintf("[%s] %s %s | ID: %d, Type: %s, %f x $%f (~$%.f)",
-		o.Status, o.Side, o.Symbol, o.ID, o.Type, o.Quantity, o.Price, o.Quantity*o.Price)
+		o.Status, o.Side, o.Pair, o.ID, o.Type, o.Quantity, o.Price, o.Quantity*o.Price)
 }
